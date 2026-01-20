@@ -11,42 +11,35 @@ jobs:
     name: Build and Deploy Job
 
     steps:
+      # Clona el repo en el runner
       - uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      # DEBUG: ver qué carpetas existen REALMENTE en GitHub
+      - name: Debug - list repo files
+        run: |
+          echo "PWD:"
+          pwd
+          echo "ROOT:"
+          ls -la
+          echo "MYAPP:"
+          ls -la myapp || true
+          echo "API:"
+          ls -la api || true
 
-      # ==========================
-      # BUILD ANGULAR
-      # ==========================
+      #  Instalar y compilar Angular
       - name: Install & Build Angular
         working-directory: myapp
         run: |
           npm install
           npm run build -- --configuration production
 
-      # ==========================
-      # BUILD API
-      # ==========================
-      - name: Install API dependencies
-        working-directory: api
-        run: npm install
-
-      # ==========================
-      # DEPLOY TO SWA
-      # ==========================
+      # Deploy a Azure Static Web Apps
       - name: Deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_RIVER_09B55501E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-
-          # IMPORTANTES
-          app_location: myapp/dist/myapp/browser
-          skip_app_build: true
-
+          app_location: myapp
+          output_location: dist/myapp/browser
           api_location: api
-          skip_api_build: true
