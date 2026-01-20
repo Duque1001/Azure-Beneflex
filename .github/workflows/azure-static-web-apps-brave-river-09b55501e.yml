@@ -2,41 +2,47 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build_and_deploy_job:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
 
     steps:
-      # 1️⃣ Checkout LIMPIO (sin submodules)
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      # 2️⃣ Debug (puedes quitarlo después)
-      - name: Debug - list repo files
-        run: |
-          pwd
-          ls -la
-          ls -la myapp
-          ls -la api
+      # ✅ Fuerza Node 20 (compatible con Angular 21)
+      - name: Setup Node
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.19.0"
+          cache: "npm"
+          cache-dependency-path: myapp/package-lock.json
 
-      # 3️⃣ Instalar y compilar Angular
+      # ✅ Build Angular dentro de myapp
       - name: Install & Build Angular
         working-directory: myapp
         run: |
-          npm install
+          npm ci
           npm run build -- --configuration production
 
-      # 4️⃣ Deploy a Azure Static Web Apps
-      - name: Deploy
+      # ✅ Install API deps (si tu Functions usa package.json)
+      - name: Install API dependencies
+        working-directory: api
+        run: npm ci
+
+      # ✅ Deploy (sin build de Oryx para app)
+      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BRAVE_RIVER_09B55501E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: upload
+          action: "upload"
 
-          app_location: myapp
-          output_location: dist/myapp/browser
-          api_location: api
+          app_location: "myapp"
+          output_location: "dist/myapp/browser"
+
+          api_location: "api"
+
+          # 🔥 IMPORTANTÍSIMO: que NO intente build en Oryx
+          skip_app_build: true
