@@ -21,14 +21,14 @@ jobs:
       - name: Install & Build Angular
         working-directory: myapp
         run: |
-          npm ci
+          npm install
           npm run build -- --configuration production
 
       # ---------- BUILD API (FUNCTIONS) ----------
       - name: Install API dependencies
         working-directory: api
         run: |
-          npm ci
+          npm install
 
       # ---------- DEPLOY (UPLOAD ONLY) ----------
       - name: Deploy to Azure Static Web Apps
@@ -44,3 +44,4 @@ jobs:
 
           api_location: "api"
           skip_api_build: true
+
