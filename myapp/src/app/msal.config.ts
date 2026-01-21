@@ -11,8 +11,8 @@ export function msalInstanceFactory() {
       clientId: environment.spaClientId,
       authority: `https://login.microsoftonline.com/${environment.tenantId}`,
       //redirectUri: 'http://localhost:4200'
-      redirectUri: window.location.origin,
-      postLogoutRedirectUri: window.location.origin,
+      redirectUri: environment.redirectUri,
+      postLogoutRedirectUri: environment.redirectUri,
     },
     cache: {
       cacheLocation: 'localStorage',

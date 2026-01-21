@@ -4,5 +4,7 @@ export const environment = {
   spaClientId: 'c2118f1c-4ac4-4251-84de-10a4274ee244',
   apiAudience: 'aa179577-3b7f-4271-9308-337473c3bc1a',
   apiScope: 'api://aa179577-3b7f-4271-9308-337473c3bc1a/access_as_user',
-  apiBaseUrl: '/api'
+  apiBaseUrl: '/api',
+  redirectUri: 'https://brave-river-09b55501e6.azurestaticapps.net',
+  postLogoutRedirectUri: 'https://brave-river-09b55501e6.azurestaticapps.net'
 };
