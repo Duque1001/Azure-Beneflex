@@ -2,9 +2,9 @@ import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { MsalGuardConfiguration, MsalInterceptorConfiguration } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 
-const redirectUri = window.location.origin + '/';
-
 export function msalInstanceFactory() {
+  const redirectUri = window.location.origin;
+
   return new PublicClientApplication({
     auth: {
       clientId: environment.spaClientId,
