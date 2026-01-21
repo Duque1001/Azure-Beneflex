@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
+import { environment } from '../../environments/environment';
 
 @Component({
   standalone: true,
@@ -23,6 +24,8 @@ export class LoginComponent {
       return;
     }
 
-    this.msal.loginRedirect();
+    this.msal.loginRedirect({
+      scopes: [environment.apiScope]
+    });
   }
 }
