@@ -3,14 +3,12 @@ import { MsalGuardConfiguration, MsalInterceptorConfiguration } from '@azure/msa
 import { environment } from '../environments/environment';
 
 export function msalInstanceFactory() {
-  const redirectUri = window.location.origin;
-
   return new PublicClientApplication({
     auth: {
       clientId: environment.spaClientId,
       authority: `https://login.microsoftonline.com/${environment.tenantId}`,
-      redirectUri,
-      postLogoutRedirectUri: redirectUri
+      redirectUri: window.location.origin,
+      postLogoutRedirectUri: window.location.origin
     },
     cache: {
       cacheLocation: 'localStorage'
